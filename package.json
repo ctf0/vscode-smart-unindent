@@ -2,7 +2,7 @@
     "name": "smart-unindent",
     "displayName": "Smart Unindent",
     "description": "when mid line remove white space otherwise unindent",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "publisher": "ctf0",
     "repository": "https://github.com/ctf0/vscode-smart-unindent",
     "engines": {

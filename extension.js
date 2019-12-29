@@ -7,35 +7,32 @@ function activate(context) {
     let disposable = vscode.commands.registerCommand('smart.unindent', async () => {
         let editor = vscode.window.activeTextEditor
         const { document, selections } = editor
+        let done = 0
 
         for (const selection of selections) {
             let tab_size = editor.options.tabSize
-            let active = selection.active
+            const { start, end } = selection
+
             let range = new vscode.Range(
-                active.line,
+                start.line,
                 0,
-                active.line,
-                active.character
+                end.line,
+                end.character
             )
             let txt = document.getText(range)
+            let regex = /\S\s{2,}/
 
-            if (/\S\s{2,}/.test(txt)) {
+            if (range.isSingleLine && regex.test(txt)) {
+                done++
                 await editor.edit(
-                    (edit) => edit.replace(range, txt.replace(/\S\s{2,}/, (match) => match.trim())),
+                    (edit) => edit.replace(range, txt.replace(regex, (match) => match.trim())),
                     { undoStopBefore: false, undoStopAfter: false }
                 )
-            } else {
-                let regex = new RegExp(`^\\s{${tab_size}}`)
-
-                if (regex.test(txt)) {
-                    await editor.edit(
-                        (edit) => edit.replace(range, txt.replace(regex, '')),
-                        { undoStopBefore: false, undoStopAfter: false }
-                    )
-                } else {
-                    await vscode.commands.executeCommand('editor.action.outdentLines')
-                }
             }
+        }
+
+        if (selections.length > done) {
+            await vscode.commands.executeCommand('editor.action.outdentLines')
         }
     })
 
