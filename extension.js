@@ -25,10 +25,16 @@ function activate(context) {
                     { undoStopBefore: false, undoStopAfter: false }
                 )
             } else {
-                await editor.edit(
-                    (edit) => edit.replace(range, txt.replace(new RegExp(`^\\s{${tab_size}}`), '')),
-                    { undoStopBefore: false, undoStopAfter: false }
-                )
+                let regex = new RegExp(`^\\s{${tab_size}}`)
+
+                if (regex.test(txt)) {
+                    await editor.edit(
+                        (edit) => edit.replace(range, txt.replace(regex, '')),
+                        { undoStopBefore: false, undoStopAfter: false }
+                    )
+                } else {
+                    await vscode.commands.executeCommand('editor.action.outdentLines')
+                }
             }
         }
     })
