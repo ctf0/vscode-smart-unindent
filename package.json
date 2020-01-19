@@ -2,7 +2,7 @@
     "name": "smart-unindent",
     "displayName": "Smart Unindent",
     "description": "when mid line remove white space otherwise unindent",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "publisher": "ctf0",
     "repository": "https://github.com/ctf0/vscode-smart-unindent",
     "engines": {
@@ -16,6 +16,16 @@
     ],
     "main": "./extension.js",
     "contributes": {
+        "configuration": {
+            "title": "Smart Unindent",
+            "properties": {
+                "smart-unindent.removeExtraSpace": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "remove mid line white space even when at the start of line"
+                }
+            }
+        },
         "commands": [
             {
                 "command": "smart.unindent",
