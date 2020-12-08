@@ -1,5 +1,5 @@
 const vscode = require('vscode')
-const PACKAGE_NAME = 'smart-unindent'
+const PACKAGE_NAME = 'smartUnindent'
 
 let config = {}
 
@@ -18,7 +18,7 @@ async function activate(context) {
     context.subscriptions.push(
         vscode.commands.registerCommand('smart.unindent', async () => {
             let editor = vscode.window.activeTextEditor
-            let { document, selections } = editor
+            let {document, selections} = editor
             let done = 0
 
             for (const selection of selections) {
@@ -26,7 +26,7 @@ async function activate(context) {
                     let txt
                     let range
                     let regex
-                    const { start, end } = selection
+                    const {start, end} = selection
 
                     if (atStartOfLine(selection) && config.removeExtraSpace) {
                         regex = new RegExp(/\S\s{2,}/)
@@ -42,7 +42,7 @@ async function activate(context) {
                         done++
                         await editor.edit(
                             (edit) => edit.replace(range, txt.replace(regex, (match) => match.trim())),
-                            { undoStopBefore: false, undoStopAfter: false }
+                            {undoStopBefore: false, undoStopAfter: false}
                         )
                     }
                 }
@@ -56,7 +56,7 @@ async function activate(context) {
 }
 
 function getRange(selection, endLength) {
-    const { start, end } = selection
+    const {start, end} = selection
 
     return new vscode.Range(
         start.line,
@@ -71,7 +71,7 @@ function atStartOfLine(selection) {
 }
 
 async function readConfig() {
-    return config = await vscode.workspace.getConfiguration(PACKAGE_NAME)
+    config = await vscode.workspace.getConfiguration(PACKAGE_NAME)
 }
 
 exports.activate = activate

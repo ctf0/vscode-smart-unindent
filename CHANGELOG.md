@@ -12,3 +12,7 @@
 
 - new config `removeExtraSpace`
 - fix behavior with multiple white spaces positions on the same line
+
+## 0.0.5
+
+- fix package settings name
